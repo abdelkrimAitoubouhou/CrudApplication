@@ -2,47 +2,37 @@ package com.example.crud.controller;
 
 import com.example.crud.entities.Student;
 import com.example.crud.service.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000/")
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/stud")
+
 
 public class StudentController {
-    @Autowired
-     StudentService studentService;
+    StudentService studentService;
 
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
 
-    @GetMapping("/getAllStudents")
-    public List<Student> getAllStudents(){
+    @GetMapping("/admin/getAllStudents")
+    public List<Student> getAllStudents() {
         return studentService.getAll();
     }
 
-
-    @PostMapping("/addStudent")
-    public void addStudent(@RequestBody Student student){
-         studentService.addStudent(student);
+    @PostMapping("/admin/addStudent")
+    public Student addStudent(@RequestBody Student student){
+        Student addedStudent = studentService.addStudent(student);
+        return addedStudent;
     }
 
-
-    @GetMapping("/getStudentById/{id}")
-    public Student getStudentById(@PathVariable Long id){
-        return studentService.getStudentById(id);
-    }
-
-    @PostMapping("/updateStudent")
-    public Student updateStudent(@RequestBody Student student){
-        return studentService.updateStudent(student);
-    }
-
-
-    @GetMapping("deleteStudent/{id}")
-    public void deleteStudent(@PathVariable Long id){
+    @GetMapping("/admin/deleteStudent")
+    public void deleteStudent(@RequestParam Long id) {
         studentService.deleteStudent(id);
     }
-
 
 
 }
